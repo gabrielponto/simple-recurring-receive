@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pagamento Recorrente - Gabriel Oliveira</title>
+        <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/static/js/waitingDialog.js"></script>
+        <script type="text/javascript" src="/static/js/vue.min.js"></script>
+        <script type="text/javascript" src="/static/js/card.js"></script>
+        <link href="/static/css/font-awesome.min.css" type="text/css" />
+        <script type="text/javascript" src="/static/js/payment.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="cart col-md-12">
+                    <h1>Pagamento Recorrente!</h1>
+                    <div class="payment_type" id="cart_payment_type">
+                        <div class="panel-group" id="accordion">
+                            <div class="payment_type_item panel panel-default" v-for="item in types">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" v-bind:href="collapseIdHref(item.name)"><span class="caret"></span> [[ item.displayName ]]</a>
+                                    </h4>
+                                </div>
+                                <div class="panel-collapse collapse in" v-bind:id="collapseId(item.name)">
+                                    <div class="panel-body">
+                                        <a href="#" class="payment_type_item_option col-md-2" v-bind:class="{payment_type_item_option_active: paymentActive(option.name)}" v-bind:data-name="option.name" v-for="option in item.options" v-if="item.name == 'ONLINE_DEBIT'">
+                                            <span class="glyphicon glyphicon-ok-circle check_hidden"></span>
+                                            <h4>[[ option.displayName ]]</h4>
+                                            <img v-bind:src="pagseguroStaticUrl(option.images.MEDIUM.path)" v-if="option.images" />
+                                            <input type="radio" value="[[option.name]]" name="payment_method" style="display:none" />
+                                        </a>
+                                        <a href="#" class="payment_type_item_option boleto" v-bind:class="{payment_type_item_option_active: paymentActive(option.name)}" v-bind:data-name="option.name" v-if="item.name=='BOLETO'" v-for="option in item.options">
+                                            <span class="glyphicon glyphicon-ok-circle check_hidden"></span>
+                                            <h4>[[option.displayName]]</h4>
+                                            <img v-bind:src="pagseguroStaticUrl(option.images.SMALL.path)" v-if="option.images" />
+                                            <p>Você terá acesso ao Produto após a Confirmação do Pagamento que tem média de confirmação de 1 dia útil. Não há acréscimo no valor do boleto</p>
+                                            <input type="radio" value="[[option.name]]" name="payment_method" style="display:none" />
+                                        </a>
+                                        <div v-if="item.name=='CREDIT_CARD'">
+                                            <div class="row">
+                                                <div class="col-md-6 col-md-offset-3">
+                                                    <div class="card-wrapper" style="margin-bottom:10px"></div>
+                                                    <form id="card-form">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <input type="text" name="number" class="form-control" placeholder="Número do Cartão" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="name" class="form-control" placeholder="Nome Impresso no Cartão" />
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="text" name="expiry" class="form-control" placeholder="Mês/Ano" />
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="text" name="cvc" class="form-control" placeholder="CVC" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <select name="installments" id="installments" class="form-control">
+                                                                    <option value="" disabled="disabled">Número de Parcelas</option>
+                                                                    <option v-bind:value="[[option.quantity]]" v-for="option in card.installments[card.brand]">[[option.quantity]]x de R$[[option.installmentAmount]] = R$[[option.totalAmount]]</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div style="text-align:center;margin-top:10px" class="clearfix">
+                                                <img v-bind:src="pagseguroStaticUrl(option.images.SMALL.path)" v-for="option in item.options" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
