@@ -7,8 +7,8 @@
         <script type="text/javascript" src="/static/js/waitingDialog.js"></script>
         <script type="text/javascript" src="/static/js/vue.min.js"></script>
         <script type="text/javascript" src="/static/js/card.js"></script>
-        <link href="/static/css/font-awesome.min.css" type="text/css" />
-        <script type="text/javascript" src="/static/js/payment.js"></script>
+        <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+        <link href="/static/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
         <div class="container">
@@ -82,5 +82,7 @@
                 </div>
             </div>
         </div>
+        {{ data.javascript | safe }}
+        <script type="text/javascript" src="/static/js/payment.js"></script>
     </body>
 </html>
